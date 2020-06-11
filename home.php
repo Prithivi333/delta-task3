@@ -12,10 +12,11 @@ $r = $db->query($sql);
 while ($info = $r->fetch_assoc()) {
     array_push($array, $info['Ename']);
 }
+
 ?>
 <html>
     <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <style>
         .dropdwn {
@@ -30,10 +31,13 @@ while ($info = $r->fetch_assoc()) {
         font-size: 16px;
         border: none;
     }
+    .myevents :hover{
+        background-color: #ff0022;
+    }
 
     .view {
-        display: none;
-        position: absolute;
+        display: block;
+        position: relative;
         background-color: #f1f1f1;
         min-width: 160px;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -49,12 +53,11 @@ while ($info = $r->fetch_assoc()) {
     .view a:hover{
         background-color: #ddd;
     }
-    .dropdwn:hover .view{display: block;}
     </style>
 
 <body>
 <div class="dropdwn">
-    <button class="myevents">My Events</button>
+    <div class="myevents">Hosting Events</div>
     <div class="view">
         <?php
             $i=0;
@@ -63,6 +66,30 @@ while ($info = $r->fetch_assoc()) {
             $i++;
             }
             ?>
+    </div>
+</div>
+<div class="dropdown">
+    <div class="myevents">Attending Events</div>
+    <div class="view">
+        <?php
+            $qry="select * from events";
+            $result=$db->query($qry);
+            while($info=$result->fetch_assoc()){
+                $json=json_decode($info['Estatus']);
+                if(isset($json)){
+                foreach($json as $name=>$status){
+                    if($name===$_SESSION['Uname']){
+                        if($status==="false"){
+                            echo $info['Ename'].": Not accepted<br>";
+                        }
+                        else{
+                            echo $info['Ename']."Accepted<br>";
+                        }
+                    }
+                }
+            }
+            }
+        ?>
     </div>
 </div>
 </body>
