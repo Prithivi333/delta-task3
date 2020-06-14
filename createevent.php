@@ -11,7 +11,7 @@ class content
 if (isset($_POST['createinvite'])){
     $n = $_POST['Ename'];
     $_SESSION['name'] = str_replace(' ', '', $n);
-    $sql="select * from events where Ename='".$_SESSION['name']."'";
+    $sql="select * from events where Ename='".$name."'and Uname='".$_SESSION['Uname']."'";
     $r=$db->query($sql);
     $name = $_SESSION['name'];
     echo "Create invites here for " . $name . "<br>";
