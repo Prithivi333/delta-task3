@@ -8,6 +8,7 @@ class Status{
     }
 }
 $status=new Status();
+//$St=(object)[''=>''];
 if (isset($_POST['submit'])) {
     $searchq = $_POST['search'];
     $searchq = preg_replace("#[^0-9a-z]#i", "", $searchq);
@@ -15,37 +16,44 @@ if (isset($_POST['submit'])) {
     $result = $db->query($sql);
     if ($result->num_rows > 0) {
         while ($info = $result->fetch_assoc()) {
-            echo "<div class='links'>" . $info['Uname'] . "<br>
+                echo "<div class='links'>" . $info['Uname'] . "<br>
               <button class='select' id='" . $info['Uname'] . "'onclick=\"select(this.id)\"'>Select</button></div>";
         }
-    } else {
-        echo "No users found";
     }
-} else {
+    else {
+        echo "No users found";
+    } 
+}
+ else {
     echo "...";
 }
 if(isset($_POST['done'])){
     $n=$_POST['n'];
     $i=0;
     while($i<count($n)){
-        echo $i."out";
-        echo count($n);
         $qry="select * from events where Uname='".$_SESSION['Uname']."'";
         $r=$db->query($qry);
         while($info=$r->fetch_assoc()){
-            echo $i."in";
+            if(isset($n[$i])){
             $status->create($n[$i],"false");
+            //$St->{$n[$i]}="false";
+            //print_r($St);
             $i+=1;
-
+            }
         }
     }
     $json=json_encode($status);
-    
+    $qry=$db->prepare("update events set Estatus = ? where Ename='".$_SESSION['name']."' and Uname='".$_SESSION['Uname']."'");   
+    $qry->bind_param("s",$json);
+    $chk=$qry->execute();
+    if($chk){
+        echo "Done!!";
+    }
 }
 ?><html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Invite</title>
 </head>
 <style>
@@ -90,5 +98,4 @@ if(isset($_POST['done'])){
 
     }
 </script>
-
 </html>
