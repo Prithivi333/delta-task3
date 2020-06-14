@@ -1,14 +1,35 @@
 <?php
+session_start();
 include "database.php";
 include "navbar.php";
-$enamevar=$_GET['msg'];
-$sql="select * from events where Ename='".$enamevar."'";
+$_SESSION['name']=$_GET['msg'];
+$sql="select * from events where Uname='".$_SESSION['Uname']."' and Ename='".$_SESSION['name']."'";
 $res=$db->query($sql);
+if($res){
 $r=$res->fetch_assoc();
 $info=json_decode($r['Econtent']);
 $head=$info->header;
 $contents=$info->body;
 $foot=$info->footer;
+$data=json_decode($r['Estatus']);
+if($data!=null || $data!="" || !isset($data)){
+$add=$data;
+//print_r($data);
+foreach($data as $name=>$stat){
+    if($stat=="false"){
+        echo $name.": Not yet accepted<br>";
+    }
+    else if($stat=="true"){
+        echo $name.":Accepted<br>";
+    }
+    else{
+        echo $name.":Rejected";
+    }
+}
+}else{
+    echo "No invites sent yet";
+}
+}
 ?>
 <html>
     <style>
@@ -42,12 +63,11 @@ $foot=$info->footer;
         }
     </style>
     <body>
-        <div>Your Invitation for "<?php echo $enamevar;?>":</div>
+        <div>Your Invitation for "<?php echo $_SESSION['name'];?>":</div>
         <div class="container">
         <div class='head'><?php echo $head;?></div>
         <div class='main'><?php echo $contents;?></div>
         <div class='foot'><?php echo $foot;?></div>
         </div>
-        <a href='invite.php'>Click here to search and send invites</a>
-    </body>
+        <div><button onclick="window.open('moreinvites.php','_self')">Invite more</button></div>
 </html>
