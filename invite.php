@@ -2,13 +2,6 @@
 include "database.php";
 include "navbar.php";
 session_start();
-class Status{
-    public function create($name,$stat){
-        $this->{$name}=$stat;
-    }
-}
-$status=new Status();
-//$St=(object)[''=>''];
 if (isset($_POST['submit'])) {
     $searchq = $_POST['search'];
     $searchq = preg_replace("#[^0-9a-z]#i", "", $searchq);
@@ -35,20 +28,19 @@ if(isset($_POST['done'])){
         $r=$db->query($qry);
         while($info=$r->fetch_assoc()){
             if(isset($n[$i])){
-            $status->create($n[$i],"false");
-            //$St->{$n[$i]}="false";
-            //print_r($St);
+            $status[$n[$i]]="false";
             $i+=1;
             }
         }
     }
     $json=json_encode($status);
-    $qry=$db->prepare("update events set Estatus = ? where Ename='".$_SESSION['name']."' and Uname='".$_SESSION['Uname']."'");   
-    $qry->bind_param("s",$json);
+    $qry=$db->prepare("insert into status (EID,status) values(?,?)");   
+    $qry->bind_param("is",$_SESSION['eid'],$json);
     $chk=$qry->execute();
     if($chk){
         echo "Done!!";
     }
+
 }
 ?><html>
 
