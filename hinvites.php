@@ -11,10 +11,12 @@ $info=json_decode($r['Econtent']);
 $head=$info->header;
 $contents=$info->body;
 $foot=$info->footer;
-$data=json_decode($r['Estatus']);
+}
+$qry="select * from status where EID='".$_SESSION['eid']."'";
+$result=$db->query($qry);
+while($row=$result->fetch_assoc()){
+$data=json_decode($row['status']);
 if($data!=null || $data!="" || !isset($data)){
-$add=$data;
-//print_r($data);
 foreach($data as $name=>$stat){
     if($stat=="false"){
         echo $name.": Not yet accepted<br>";
