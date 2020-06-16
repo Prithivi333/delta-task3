@@ -2,23 +2,22 @@
 session_start();
 include "database.php";
 include "navbar.php";
-$sql="select * from events where Uname='".$_SESSION['Uname']."' and Ename='".$_SESSION['name']."'";
+$sql="select * from status where EID='".$_SESSION['eid']."'";
 $res=$db->query($sql);
 if (isset($_POST['submit'])) {
     $searchq = $_POST['search'];
     $searchq = preg_replace("#[^0-9a-z]#i", "", $searchq);
-    $sql = "select * from users where Uname like '%" . $searchq . "%' and not Uname='".$_SESSION['Uname']."'";
-    $result = $db->query($sql);
+    $sqlq = "select * from users where Uname like '%" . $searchq . "%' and not Uname='".$_SESSION['Uname']."'";
+    $result = $db->query($sqlq);
     while($r=$res->fetch_assoc()){
     if ($result->num_rows > 0) {
-        if($r['Estatus']!=null || $r['Estatus']!=""){
-            $data=json_decode($r['Estatus']);
-            $GLOBALS['add']=$data;
-             //print_r($data);
-            print_r($GLOBALS['add']);
-            foreach($GLOBALS['add'] as $name=>$stat){
+        if($r['status']!=null || $r['status']!=""){
+            global $data;
+            $data=json_decode($r['status']);
+            //echo $data;
+            foreach($data as $name=>$stat){
         while ($info = $result->fetch_assoc()) {
-            print_r($info);
+            //print_r($info);
                     if($name!==$info['Uname']){
                 echo "<div class='links'>" . $info['Uname'] . "<br>
               <button class='select' id='" . $info['Uname'] . "'onclick=\"select(this.id)\"'>Select</button></div>";
@@ -43,17 +42,16 @@ if(isset($_POST['done'])){
         $qry="select * from events where Uname='".$_SESSION['Uname']."'";
         $r=$db->query($qry);
         while($info=$r->fetch_assoc()){
-            if(isset($n[$i])){
-            //echo $GLOBALS['add'];
-            $GLOBALS['add']->{$n[$i]}="false";
-            $i+=1;
+            if (isset($n[$i])) {
+                $stat[$n[$i]] = "false";
+                $i += 1;
+                $json = json_encode($stat);
+                $qry = $db->prepare("insert into status (EID,status) values(?,?)");
+                $qry->bind_param("is", $_SESSION['eid'], $json);
+                $chk = $qry->execute();
             }
         }
     }
-    $json=json_encode($add);
-    $qry=$db->prepare("update events set Estatus = ? where Ename='".$_SESSION['name']."' and Uname='".$_SESSION['Uname']."'");   
-    $qry->bind_param("s",$json);
-    $chk=$qry->execute();
     if($chk){
         echo "Done!!";
     }
