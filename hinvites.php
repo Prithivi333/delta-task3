@@ -8,6 +8,7 @@ $res=$db->query($sql);
 if($res){
 $r=$res->fetch_assoc();
 $info=json_decode($r['Econtent']);
+$_SESSION['eid']=$r['EID'];
 $head=$info->header;
 $contents=$info->body;
 $foot=$info->footer;
