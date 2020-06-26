@@ -63,18 +63,19 @@ if(isset($_POST['done'])){
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <div id="full">
 <form method="post" action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>'>
             <label>Search for users to send invites here:</label><br>
             <input type="text" required class="input" name="search"><br>
             <button type="submit" name="submit">SEARCH</button>
         </form>
-    </div>
     <fieldset>
     <legend>Selected users:</legend>
     <form method="post" id="form" action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>'>
     </fieldset>
         <button name='done'>Send!!</button>
     </form>
+</div>
     </body>
     <div id="popup">
         <div id="header">Link for the attendee</div>
@@ -91,18 +92,19 @@ if(isset($_POST['done'])){
         var box = document.getElementById('popup');
         var close = document.getElementById('close');
         var btn = document.getElementById('Ilink');
+        var full=document.getElementById('full');
         btn.onclick = function() {
             box.style.display = "block";
-            //document.body.setAttribute('class','blur');
+            full.setAttribute('class','blur');
         }
         close.onclick = function() {
             box.style.display = "none";
-            //document.body.setAttribute('class',null);
+            full.setAttribute('class',null);
         }
         window.onclick = function(event) {
             if (event.target == box) {
                 box.style.display = "none";
-                //document.body.setAttribute('class',null);
+                full.setAttribute('class',null);
             }
         }
     }
