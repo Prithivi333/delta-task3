@@ -1,6 +1,7 @@
 *{
     margin: 0px;
     padding: 0px;
+    text-align: center;
 }
 .log{
     margin: auto;
@@ -8,6 +9,54 @@
     border: 2px solid rgb(76, 0, 255);
     height: auto;
     width: fit-content;
+}
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  
+  .topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+input{
+    width: auto;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+    transition: 0.5s;
+    outline: none;
+  }
+  
+  input:focus{
+    border: 3px solid #555;
+  }
+  select{
+    width: auto;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+    transition: 0.5s;
+    outline: none;
+  }
+  
+  select:focus{
+    border: 3px solid #555;
+  }
+.txt{
+    color: sienna;
 }
 .error{
     background:#ff1515;
@@ -19,22 +68,74 @@
 	text-align:center;
 	margin-bottom:10px;
 }
-.dropdwn {
+#title{
+    border: 2px dashed rgba(112, 37, 155, 0.801);
+    font-size: 40px;
+    font-family: 'Dancing Script', cursive;
+    background-color: slategrey;
+    color: whitesmoke;
+}
+#accbox{
+    margin-top: 30px;
+    margin-left: 200px;
+    margin-right: 200px;
+    border:  double rgb(70, 8, 8);
+    font-size: 25px;
+}
+.tab {
     position: relative;
     display: inline-block;
 }
-
+.accept{
+          border-radius: 5px;
+          background: #f1f5ef;
+          color: rgb(1, 15, 4);
+          border: solid 1px #fff;
+          text-decoration: none;
+          cursor: pointer;
+          font-size: 20px;
+          padding: 18px 10px;
+          width: 180px;
+          margin: auto;
+          outline: none;
+}
+.accept:hover {
+    transition: all 0.2s ease-in-out;
+    background:rgb(7, 233, 127);
+    border: solid 1px #fff;
+    color: #2f00ff ;
+}
+.denied{
+          border-radius: 5px;
+          background: #f8faf8;
+          color: rgb(42, 42, 44);
+          border: solid 1px #fff;
+          text-decoration: none;
+          cursor: pointer;
+          font-size: 20px;
+          padding: 18px 10px;
+          width: 180px;
+          margin: auto;
+          outline: none;
+}
+.denied:hover {
+    transition: all 0.2s ease-in-out;
+    background:rgb(230, 11, 11);
+    border: solid 1px #fff;
+    color: #e5ff00 ;
+}
 .myevents {
     background-color: #4CAF50;
     color: white;
     padding: 16px;
     font-size: 16px;
     border: none;
+    position: relative;
 }
 
 .view {
-    display: none;
-    position: absolute;
+    display: block;
+    position: relative;
     background-color: #f1f1f1;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -50,4 +151,174 @@
 .view a:hover{
     background-color: #ddd;
 }
-.dropdwn:hover .view{display: block;}
+.container{
+    width: 800px;
+    height: fit-content;
+    margin: auto;
+    padding: auto;
+    border: 2px solid black;
+    object-fit: cover;
+}
+.head{
+    width: 800px;
+    height: auto;
+    margin: auto;
+    padding: auto;
+    border: 2px solid black;
+    font-family: 'Sacramento', cursive;
+    font-size: 60px;
+    font-weight: 600;
+}
+.main{
+    width: 800px;
+    height: auto;
+    margin: auto;
+    padding: auto;
+    border: 2px solid black;
+    text-align: center;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 50px;
+    float: bottom;
+}
+.foot{
+    width: 800px;
+    height: auto;
+    margin: auto;
+    padding: auto;
+    border: 2px solid black;
+    float: bottom;
+}
+.links {
+    text-align: center;
+    position: relative;
+    display: block;
+}
+
+.links button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.links button:hover {
+    background-color: #ddd;
+}
+
+#popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+#close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#close:hover,
+#close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+#reject{
+    float: right;
+    border-radius: 2px;
+          background: #f8faf8;
+          color: rgb(42, 42, 44);
+          border: solid 1px #fff;
+          text-decoration: none;
+          cursor: pointer;
+          font-size: 10px;
+          padding: 5px 5px;
+          width: 80px;
+          margin: auto;
+          outline: none;
+}
+#reject:hover {
+    transition: all 0.2s ease-in-out;
+    background:rgb(230, 11, 11);
+    border: solid 1px #fff;
+    color: #e5ff00 ;
+}
+.more{
+    border-radius: 5px;
+    background: #f8faf8;
+    color: rgb(42, 42, 44);
+    border: solid 1px #fff;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 18px 10px;
+    width: 180px;
+    margin: auto;
+    outline: none;
+}
+.more:hover{
+    transition: all 0.2s ease-in-out;
+    background:rgb(88, 11, 230);
+    border: solid 1px rgb(154, 16, 218);
+    color: #edeee7 ;
+}
+/*.blur{
+        filter: blur(2px);
+    }*/
+.nacinv{
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: auto;
+    margin-bottom: 4px;
+    border-left: 10px solid yellow;
+    background-color: rgb(227, 235, 161);
+    color: rgb(1, 14, 14);
+    font-family: 'Libre Baskerville', serif;
+}
+.accinv{
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: auto;
+    margin-bottom: 4px;
+    border-left: 10px solid rgb(0, 255, 42);
+    background-color: rgb(120, 196, 117);
+    color: rgb(89, 0, 255);
+    font-family: 'Libre Baskerville', serif;
+}
+.rejinv{
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: auto;
+    margin-bottom: 4px;
+    border-left: 10px solid red;
+    background-color: rgb(224, 142, 142);
+    font-family: 'Libre Baskerville', serif;
+    color: rgb(215, 252, 5);
+}
