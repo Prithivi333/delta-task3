@@ -79,7 +79,7 @@ if(isset($_POST['done'])){
     <div id="popup">
         <div id="header">Link for the attendee</div>
         <span id="close">&times;</span>
-        <input type="text" value="http://localhost/party/ainvites.php?ename=<?php echo $_SESSION['name']?>" id="copytxt"><button onclick="copy()">Copy to clipboard</button>
+        <input type="text" readonly value="http://localhost/party/ainvites.php?ename=<?php echo $_SESSION['name']?>" id="copytxt"><button onclick="copy()">Copy to clipboard</button>
     </div>
     <script>
     function select(name) {
