@@ -11,7 +11,7 @@ session_start();
   <link rel="stylesheet" type="text/css" href="style.css">
   <style>
     body{
-      background-image: url('hello.jpg');
+      background-image: url('pics/hello.jpg');
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-size: 75% 100%;

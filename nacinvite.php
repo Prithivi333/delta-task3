@@ -16,7 +16,7 @@ $contents=nl2br($contents);
 if($r['Etype']==="Birthday Party"){
     echo '<style>
     .container{
-        background-image: url("bday.jpg");
+        background-image: url("pics/bday.jpg");
         background-repeat: no-repeat;
         background-size: 100% 100%;
         background-position: center;
@@ -25,7 +25,7 @@ if($r['Etype']==="Birthday Party"){
 if($r['Etype']==="Wedding"){
 echo '<style type="text/css">
     .container{
-        background-image: url("wedding.jpg");
+        background-image: url("pics/wedding.jpg");
         background-repeat: no-repeat;
         background-size: 100% 100%;
         background-position: center;
@@ -34,7 +34,7 @@ echo '<style type="text/css">
 if($r['Etype']==="Funeral"){
 echo '<style type="text/css">
     .container{
-        background-image: url("funeral.jpg");
+        background-image: url("pics/funeral.jpg");
         background-repeat: no-repeat;
         background-size: 100% 100%;
         background-position: center;
