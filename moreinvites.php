@@ -2,19 +2,19 @@
 session_start();
 include "database.php";
 include "navbar.php";
-$sql="select * from status where EID='".$_SESSION['eid']."'";
-$res=$db->query($sql);
 if (isset($_POST['submit'])) {
+    $sql="select * from status where EID='".$_SESSION['eid']."'";
+    $res=$db->query($sql);
     $searchq = $_POST['search'];
     $searchq = preg_replace("#[^0-9a-z]#i", "", $searchq);
     $sqlq = "select * from users where Uname like '%" . $searchq . "%' and not Uname='".$_SESSION['Uname']."'";
     $result = $db->query($sqlq);
     while($r=$res->fetch_assoc()){
+        //echo"chk";
     if ($result->num_rows > 0) {
-        if($r['status']!=null || $r['status']!=""){
+        if($r['Status']!=null || $r['Status']!=""){
             global $data;
-            $data=json_decode($r['status']);
-            //echo $data;
+            $data=json_decode($r['Status']);
             foreach($data as $name=>$stat){
         while ($info = $result->fetch_assoc()) {
             //print_r($info);
@@ -22,10 +22,11 @@ if (isset($_POST['submit'])) {
                 echo "<div class='links'>" . $info['Uname'] . "<br>
               <button class='select' id='" . $info['Uname'] . "'onclick=\"select(this.id)\"'>Select</button></div>";
                 }
-                else{echo "no";}
+                
             }
         }
     }
+    
 }
     else {
         echo "No users found";
@@ -40,43 +41,27 @@ if(isset($_POST['done'])){
     $i=0;
     while($i<count($n)){
         $qry="select * from events where Uname='".$_SESSION['Uname']."'";
-        $r=$db->query($qry);
-        while($info=$r->fetch_assoc()){
+        $row=$db->query($qry);
+        while($info=$row->fetch_assoc()){
             if (isset($n[$i])) {
                 $stat[$n[$i]] = "false";
                 $i += 1;
                 $json = json_encode($stat);
-                $qry = $db->prepare("insert into status (EID,status) values(?,?)");
-                $qry->bind_param("is", $_SESSION['eid'], $json);
+                $qry = $db->prepare("insert into status (EID,Ename,Status) values(?,?,?)");
+                $qry->bind_param("iss", $_SESSION['eid'], $_SESSION['name'], $json);
                 $chk = $qry->execute();
             }
         }
     }
     if($chk){
-        echo "Done!!";
+        echo "<div id='ilink'>Done!!<br><button id='Ilink' onclick=\"link()\">Get Link!</button></div>";
     }
 }
 ?>
 <html>
-<style>
-    .links {
-        text-align: center;
-        position: relative;
-        display: inline-block;
-    }
-
-    .links button {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-    }
-
-    .links button:hover {
-        display: block;
-        background-color: #ddd;
-    }
-</style>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
 <body>
 <form method="post" action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>'>
             <label>Search for users to send invites here:</label><br>
@@ -91,11 +76,42 @@ if(isset($_POST['done'])){
         <button name='done'>Send!!</button>
     </form>
     </body>
+    <div id="popup">
+        <div id="header">Link for the attendee</div>
+        <span id="close">&times;</span>
+        <input type="text" value="http://localhost/party/ainvites.php?ename=<?php echo $_SESSION['name']?>" id="copytxt"><button onclick="copy()">Copy to clipboard</button>
+    </div>
     <script>
     function select(name) {
         document.getElementById("form").innerHTML +="<input name=\"n[]\" value='"+name+"' readonly></input><br>";
         document.getElementById(name).style.display='none';
 
+    }
+    function link() {
+        var box = document.getElementById('popup');
+        var close = document.getElementById('close');
+        var btn = document.getElementById('Ilink');
+        btn.onclick = function() {
+            box.style.display = "block";
+            //document.body.setAttribute('class','blur');
+        }
+        close.onclick = function() {
+            box.style.display = "none";
+            //document.body.setAttribute('class',null);
+        }
+        window.onclick = function(event) {
+            if (event.target == box) {
+                box.style.display = "none";
+                //document.body.setAttribute('class',null);
+            }
+        }
+    }
+
+    function copy() {
+        var copytxt = document.getElementById("copytxt");
+        copytxt.select();
+        document.execCommand("copy");
+        alert("Copied the link: " + copytxt.value);
     }
 </script>
 </html>
