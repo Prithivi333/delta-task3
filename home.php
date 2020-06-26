@@ -36,9 +36,8 @@ if(isset($_GET['del'])){
     <link rel="stylesheet" type="text/css" href="style.css">
     <style>
     body{
-      background-image: url('pics/welcome.jpg');
+      background-image: url("pics/welcome.jpg");
       background-repeat: no-repeat;
-      background-attachment: fixed;
       background-size: 100% 100%;
     }
     html,body{

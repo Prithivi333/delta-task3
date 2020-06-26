@@ -13,9 +13,9 @@ session_start();
     body{
       background-image: url('pics/hello.jpg');
       background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-size: 75% 100%;
+      background-size: 100% 100%;
       background-position: center;
+      object-fit: contain;
     }
     html,body{
       height: 100%;
