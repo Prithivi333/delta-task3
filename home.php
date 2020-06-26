@@ -5,58 +5,50 @@ session_start();
 if (!isset($_SESSION["UID"])) {
     echo "<script>window.open('index.php?mes=Access denied!','_self');</script>";
 }
-echo 'Welcome ' . $_SESSION['Uname'] . '!!<br>';
+echo '<div id="title">Welcome <b>' . $_SESSION['Uname'] . '</b>!!<br></div>';
 $array = array();
 $sql = "select * from events where Uname='" . $_SESSION['Uname'] . "'";
 $r = $db->query($sql);
 while ($info = $r->fetch_assoc()) {
     array_push($array, $info['Ename']);
 }
-
+if(isset($_GET['del'])){
+    $info=$db->query("select * from status where Ename='".$_GET['ename']."'");
+    while ($row = $info->fetch_assoc()) {
+        $json = json_decode($row['Status'], true);
+        if (array_key_exists($_SESSION['Uname'], $json)) {
+            $json[$_SESSION['Uname']] = "deleted";
+            $jd = json_encode($json);
+            $query = $db->prepare("update status set Status=? where Ename='" . $_GET['ename'] . "' and SID='" . $row['SID'] . "'");
+            $query->bind_param("s", $jd);
+            $chk = $query->execute();
+            if($chk){
+            echo "<script> alert(\"deleted the invite\");</script>";
+            }
+        }
+    }
+}
 ?>
 <html>
     <head>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
     <style>
-        .dropdwn {
-        position: relative;
-        display: inline-block;
+    body{
+      background-image: url('welcome.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100% 100%;
     }
-
-    .myevents {
-        background-color: #4CAF50;
-        color: white;
-        padding: 16px;
-        font-size: 16px;
-        border: none;
-    }
-    .myevents :hover{
-        background-color: #ff0022;
-    }
-
-    .view {
-        display: block;
-        position: relative;
-        background-color: #f1f1f1;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-    }
-
-    .view a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-    }
-    .view a:hover{
-        background-color: #ddd;
+    html,body{
+      height: 50%;
+      width: 100%;
     }
     </style>
-
+    </head>
 <body>
-<div class="dropdwn">
+<div class="tab">
     <div class="myevents">Hosting Events</div>
     <div class="view">
         <?php
@@ -68,22 +60,26 @@ while ($info = $r->fetch_assoc()) {
             ?>
     </div>
 </div>
-<div class="dropdown">
+<div class="tab">
     <div class="myevents">Attending Events</div>
     <div class="view">
         <?php
-            $qry="select * from events";
+            $qry="select * from status";
             $result=$db->query($qry);
             while($info=$result->fetch_assoc()){
-                $json=json_decode($info['Estatus']);
+                $json=json_decode($info['Status']);
                 if(isset($json)){
                 foreach($json as $name=>$status){
                     if($name===$_SESSION['Uname']){
                         if($status==="false"){
-                            echo $info['Ename'].": Not accepted<br>";
+                            echo "<a href='nacinvite.php?ename=".$info['Ename']."'>".$info['Ename'].": Not yet accepted</a><br>";//go to a page to view and accept/reject invite
                         }
-                        else{
-                            echo $info['Ename']."Accepted<br>";
+                        if($status==="true"){
+                            echo "<a href='viewaccinvite.php?ename=".$info['Ename']."'>".$info['Ename'].": Accepted</a><br>";//go to a page to view accepted invite
+                        }
+                        if($status==="rejected"){
+                            echo "<a href='viewaccinvite.php?ename=".$info['Ename']."'>".$info['Ename'].": 
+                                Rejected</a><a href=\"home.php?del=true&ename=".$info['Ename']."\"><button id='reject'>Delete Invite</button></a><br>";//setup to hide deleted invite from dashboard
                         }
                     }
                 }
